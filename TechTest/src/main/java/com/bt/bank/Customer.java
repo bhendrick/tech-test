@@ -10,10 +10,12 @@ public class Customer {
   // this will simulate an identity value from a database
   static long i = 0;
 
-  public Customer(String FirstName, String LastName, String addresss, String phoneNumber) {
-    id = ++i;
-    firstName = FirstName;
-    lastName = LastName;
+  public Customer(String firstName, String lastName, String address, String phoneNumber) {
+    this.id = ++i;
+    this.firstName = firstName;
+    this.lastName = lastName;
+    this.address = address;
+    this.phoneNumber = phoneNumber;
   }
 
   public long getId() {

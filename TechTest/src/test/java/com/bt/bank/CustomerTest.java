@@ -9,12 +9,12 @@ public class CustomerTest {
 
   @Test
   public void testCreatingCustomer() {
-    Customer account = new Customer("Barry", "Hendrick", "Palmerstown, Dublin", "0879802750");
-    Assert.assertEquals("Barry", account.getFirstName());
-    Assert.assertEquals("Hendrick", account.getLastName());
-    Assert.assertEquals("Palmerstown, Dublin", account.getAddress());
-    Assert.assertEquals("0879802750", account.getPhoneNumber());
-    Assert.assertTrue("ID > 0", account.getId() > 0);
+    Customer customer = new Customer("Barry", "Hendrick", "Palmerstown, Dublin", "0879802750");
+    Assert.assertEquals("Barry", customer.getFirstName());
+    Assert.assertEquals("Hendrick", customer.getLastName());
+    Assert.assertEquals("Palmerstown, Dublin", customer.getAddress());
+    Assert.assertEquals("0879802750", customer.getPhoneNumber());
+    Assert.assertTrue("ID > 0", customer.getId() > 0);
   }
 
   @Test
