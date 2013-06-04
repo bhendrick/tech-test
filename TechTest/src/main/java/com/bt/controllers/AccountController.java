@@ -1,14 +1,14 @@
 package main.java.com.bt.controllers;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 import main.java.com.bt.bank.Account;
-import main.java.com.bt.bank.Bank;
 import main.java.com.bt.bank.Customer;
 import main.java.com.bt.repositories.AccountRepository;
 import main.java.com.bt.repositories.CustomerRepository;
 
-public class BankAccountController {
+public class AccountController {
   public CustomerRepository customerRepository;
   public AccountRepository accountRepository;
 
@@ -27,25 +27,24 @@ public class BankAccountController {
   public AccountRepository getAccountRepository() {
     return accountRepository;
   }
-  
-  public void create(String firstName, String lastName, String address, String phoneNumber, BigDecimal balance) {
-    Bank bank = new Bank();
 
+  public void create(long id, String firstName, String lastName, String address, String phoneNumber, BigDecimal balance) {
     Customer newCustomer = customerRepository.createCustomer(firstName, lastName, address, phoneNumber);
-    Account newAccount = accountRepository.createAccount(newCustomer, balance);
-    //bank.addAccount(newCustomer);
+    accountRepository.createAccount(id, newCustomer, balance);
+  }
+
+  public List<Account> getAllAccounts() {
+    return accountRepository.getAll();
   }
 
   public void deposit(long id, BigDecimal amount) {
-    Customer customer = customerRepository.getCustomerById(id);
-    Account account = accountRepository.getAccountByCustomer(customer);
+    Account account = accountRepository.getAccountById(id);
     account.deposit(amount);
     accountRepository.updateAccountBalance(account);
   }
 
   public void withdraw(long id, BigDecimal amount) {
-    Customer customer = customerRepository.getCustomerById(id);
-    Account account = accountRepository.getAccountByCustomer(customer);
+    Account account = accountRepository.getAccountById(id);
     account.withdraw(amount);
     accountRepository.updateAccountBalance(account);
   }

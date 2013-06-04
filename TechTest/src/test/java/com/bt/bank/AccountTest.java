@@ -3,61 +3,65 @@ package test.java.com.bt.bank;
 import java.math.BigDecimal;
 
 import main.java.com.bt.bank.Account;
-import main.java.com.bt.bank.Bank;
-import main.java.com.bt.bank.Customer;
+import main.java.com.bt.controllers.AccountController;
+import main.java.com.bt.repositories.impl.AccountRepositoryInMemory;
+import main.java.com.bt.repositories.impl.CustomerRepositoryInMemory;
 
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 
 public class AccountTest {
+  private AccountController accountController;
 
-  @Test
-  public void testOpeningAccount() {
-    Bank bank = new Bank();
-
-    Customer customer = new Customer("Barry", "Hendrick", "Palmerstown, Dublin", "0879802750");
-    BigDecimal balance = new BigDecimal(800.00);
-    bank.openAccount(customer, balance);
-
-    Assert.assertEquals(1, bank.getAccounts().size());
-    Assert.assertEquals(balance, bank.getAccounts().get(0).getBalance());
-    Assert.assertEquals(customer, bank.getAccounts().get(0).getCustomer());
-    Assert.assertTrue("ID > 0", bank.getAccounts().get(0).getId() > 0);
+  @Before
+  public void setUp() {
+    accountController = new AccountController();
+    accountController.setCustomerRepository(new CustomerRepositoryInMemory());
+    accountController.setAccountRepository(new AccountRepositoryInMemory());
   }
 
   @Test
-  public void testDepositIntoAccount() {
-    Customer customer = new Customer("Barry", "Hendrick", "Palmerstown, Dublin", "0879802750");
-    Bank bank = new Bank();
-    BigDecimal balance = new BigDecimal(0.00);
-    Account account = bank.openAccount(customer, balance);
+  public void testCreateNewAccount() {
+    long accId = 12346;
 
-    account.deposit(new BigDecimal(42.00));
-    account.deposit(new BigDecimal(37.00));
-    Assert.assertEquals(new BigDecimal(79.00), account.getBalance());
+    accountController.create(accId, "Barry", "Hendrick", "Palmerstown, Dublin", "0879802750", new BigDecimal(10.00));
+    Account account = accountController.getAccountRepository().getAll().get(0);
+    Assert.assertEquals("Barry", account.getCustomer().getFirstName());
+    Assert.assertEquals("Hendrick", account.getCustomer().getLastName());
+    Assert.assertEquals("Palmerstown, Dublin", account.getCustomer().getAddress());
+    Assert.assertEquals("0879802750", account.getCustomer().getPhoneNumber());
+    Assert.assertTrue("ID > 0", account.getCustomer().getId() > 0);
   }
 
   @Test
-  public void testWithdrawFromAccount() {
-    Customer customer = new Customer("Barry", "Hendrick", "Palmerstown, Dublin", "0879802750");
-    Bank bank = new Bank();
-    BigDecimal balance = new BigDecimal(0.00);
-    Account account = bank.openAccount(customer, balance);
+  public void testDepositMoney() {
+    long accId = 12347;
+    accountController.create(accId, "Barry", "Hendrick", "Palmerstown, Dublin", "0879802750", new BigDecimal(10.00));
+    accountController.deposit(accId, new BigDecimal(500));
+    Account account = accountController.getAccountRepository().getAccountById(accId);
+    Assert.assertEquals(new BigDecimal(510), account.getBalance());
+  }
 
-    account.deposit(new BigDecimal(50.00));
-    account.withdraw(new BigDecimal(10.00));
-    Assert.assertEquals(new BigDecimal(40), account.getBalance());
+  @Test
+  public void testWithdrawMoney() {
+    long accId = 12348;
+    accountController.create(accId, "Barry", "Hendrick", "Palmerstown, Dublin", "0879802750", new BigDecimal(0.00));
+    accountController.deposit(accId, new BigDecimal(500));
+    accountController.withdraw(accId, new BigDecimal(200));
+    Account account = accountController.getAccountRepository().getAccountById(accId);
+    Assert.assertEquals(new BigDecimal(300), account.getBalance());
   }
 
   @Test
   public void testOverdrawingAccount() {
-    Customer customer = new Customer("Barry", "Hendrick", "Palmerstown, Dublin", "0879802750");
-    Bank bank = new Bank();
-    BigDecimal balance = new BigDecimal(5.00);
-    Account account = bank.openAccount(customer, balance);
+    long accId = 12349;
 
-    account.withdraw(new BigDecimal(10.00));
-    Assert.assertEquals("Balance should be original value", balance, account.getBalance());
+    accountController.create(accId, "Barry", "Hendrick", "Palmerstown, Dublin", "0879802750", new BigDecimal(0.00));
+    accountController.deposit(accId, new BigDecimal(500));
+    accountController.withdraw(accId, new BigDecimal(600));
+
+    Account account = accountController.getAccountRepository().getAccountById(accId);
+    Assert.assertEquals("Balance should be original value", new BigDecimal(500), account.getBalance());
   }
-
 }

@@ -7,11 +7,8 @@ public class Account {
   public long id;
   public BigDecimal balance;
 
-  // this will simulate an identity value from a database
-  static long i = 0;
-
-  public Account(Customer customer, BigDecimal balance) {
-    this.id = ++i;
+  public Account(long id, Customer customer, BigDecimal balance) {
+    this.id = id;
     this.customer = customer;
     this.balance = balance;
   }
@@ -20,16 +17,8 @@ public class Account {
     return customer;
   }
 
-  public void setCustomer(Customer customer) {
-    this.customer = customer;
-  }
-
   public long getId() {
     return id;
-  }
-
-  public void setId(long id) {
-    this.id = id;
   }
 
   public BigDecimal getBalance() {

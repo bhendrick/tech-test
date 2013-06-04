@@ -7,11 +7,11 @@ import main.java.com.bt.bank.Account;
 import main.java.com.bt.bank.Customer;
 
 public interface AccountRepository {
-  public Account getAccountByCustomer(Customer customer);
+  public Account getAccountById(long id);
 
   public void updateAccountBalance(Account account);
 
-  public Account createAccount(Customer customer, BigDecimal balance);
+  public Account createAccount(long id, Customer customer, BigDecimal balance);
 
   public List<Account> getAll();
 }

@@ -11,20 +11,8 @@ import main.java.com.bt.repositories.AccountRepository;
 public class AccountRepositoryInMemory implements AccountRepository {
   private List<Account> accounts = new ArrayList<Account>();
 
-  
-  public Account getAccountByCustomer(Customer customer) {
-    Account accountReturn = null;
-    for (Account account : accounts) {
-      if (customer == account.getCustomer()) {
-        accountReturn = account;
-      }
-    }
-
-    return accountReturn;
-  }
-
-  public Account createAccount(Customer customer, BigDecimal balance) {
-    Account accountToSave = new Account(customer, balance);
+  public Account createAccount(long id, Customer customer, BigDecimal balance) {
+    Account accountToSave = new Account(id, customer, balance);
     accounts.add(accountToSave);
     return accountToSave;
   }
@@ -34,5 +22,16 @@ public class AccountRepositoryInMemory implements AccountRepository {
   }
 
   public void updateAccountBalance(Account account) {
+  }
+
+  public Account getAccountById(long id) {
+    Account accountReturn = null;
+    for (Account account : accounts) {
+      if (id == account.getId()) {
+        accountReturn = account;
+      }
+    }
+
+    return accountReturn;
   }
 }
