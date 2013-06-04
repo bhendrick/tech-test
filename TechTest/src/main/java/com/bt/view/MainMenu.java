@@ -5,6 +5,7 @@ import java.util.Scanner;
 
 import main.java.com.bt.bank.Account;
 import main.java.com.bt.controllers.AccountController;
+import main.java.com.bt.exception.AccountOverDrawnException;
 import main.java.com.bt.repositories.impl.AccountRepositoryInMemory;
 import main.java.com.bt.repositories.impl.CustomerRepositoryInMemory;
 
@@ -67,7 +68,11 @@ public class MainMenu {
     System.out.println("Enter amount to withdraw: ");
     BigDecimal amount = input.nextBigDecimal();
 
-    accountController.withdraw(id, amount);
+    try {
+      accountController.withdraw(id, amount);
+    } catch (AccountOverDrawnException e) {
+      System.out.println("Account overdrawn");
+    }
   }
 
   private static void accTransfer(AccountController accountController) {
@@ -77,12 +82,16 @@ public class MainMenu {
     System.out.println("Enter amount to withdraw: ");
     BigDecimal amount = input.nextBigDecimal();
 
-    accountController.withdraw(id, amount);
+    try {
+      accountController.withdraw(id, amount);
+      System.out.println("Enter Account ID to deposit to: ");
+      id = input.nextLong();
 
-    System.out.println("Enter Account ID to deposit to: ");
-    id = input.nextLong();
+      accountController.deposit(id, amount);
+    } catch (AccountOverDrawnException e) {
+      System.out.println("Account overdrawn");
+    }
 
-    accountController.deposit(id, amount);
   }
 
   private static void accDeposit(AccountController accountController) {

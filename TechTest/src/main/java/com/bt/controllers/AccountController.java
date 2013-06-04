@@ -5,6 +5,7 @@ import java.util.List;
 
 import main.java.com.bt.bank.Account;
 import main.java.com.bt.bank.Customer;
+import main.java.com.bt.exception.AccountOverDrawnException;
 import main.java.com.bt.repositories.AccountRepository;
 import main.java.com.bt.repositories.CustomerRepository;
 
@@ -40,13 +41,11 @@ public class AccountController {
   public void deposit(long id, BigDecimal amount) {
     Account account = accountRepository.getAccountById(id);
     account.deposit(amount);
-    accountRepository.updateAccountBalance(account);
   }
 
-  public void withdraw(long id, BigDecimal amount) {
+  public void withdraw(long id, BigDecimal amount) throws AccountOverDrawnException {
     Account account = accountRepository.getAccountById(id);
     account.withdraw(amount);
-    accountRepository.updateAccountBalance(account);
   }
 
 }

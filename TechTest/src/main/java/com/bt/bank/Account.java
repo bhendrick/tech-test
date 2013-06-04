@@ -2,6 +2,8 @@ package main.java.com.bt.bank;
 
 import java.math.BigDecimal;
 
+import main.java.com.bt.exception.AccountOverDrawnException;
+
 public class Account {
   public Customer customer;
   public long id;
@@ -33,10 +35,13 @@ public class Account {
     setBalance(balance.add(amount));
   }
 
-  public void withdraw(BigDecimal amount) {
+  public void withdraw(BigDecimal amount) throws AccountOverDrawnException {
     BigDecimal provisionalBalance = balance.subtract(amount);
     if (provisionalBalance.compareTo(BigDecimal.ZERO) > 0) {
       setBalance(provisionalBalance);
+    }
+    else{
+      throw new AccountOverDrawnException();
     }
   }
 

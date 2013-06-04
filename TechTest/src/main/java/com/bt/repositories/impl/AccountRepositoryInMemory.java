@@ -21,9 +21,6 @@ public class AccountRepositoryInMemory implements AccountRepository {
     return accounts;
   }
 
-  public void updateAccountBalance(Account account) {
-  }
-
   public Account getAccountById(long id) {
     Account accountReturn = null;
     for (Account account : accounts) {
