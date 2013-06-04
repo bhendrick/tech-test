@@ -20,6 +20,7 @@ public class Bank {
   }
 
   public Account openAccount(Customer customer, BigDecimal balance) {
+    //??
     Account account = new Account(customer, balance);
     accounts.add(account);
     return account;

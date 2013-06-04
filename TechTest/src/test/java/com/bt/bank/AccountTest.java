@@ -1,12 +1,13 @@
 package test.java.com.bt.bank;
 
+import java.math.BigDecimal;
+
 import main.java.com.bt.bank.Account;
 import main.java.com.bt.bank.Bank;
 import main.java.com.bt.bank.Customer;
 
 import org.junit.Assert;
 import org.junit.Test;
-import java.math.BigDecimal;
 
 public class AccountTest {
 
